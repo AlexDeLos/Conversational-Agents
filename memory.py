@@ -8,6 +8,18 @@ class long_term_mem:
         self.keyword = keyword
         self.emotion = emotion_array
 
+class memory:
+    def __init__(self, userName):
+        try:
+            with open("memoryStore/" + userName) as jsonFile:
+                self.long_term = json.load(jsonFile)
+                jsonFile.close()
+        except IOError:
+            self.long_term = nx.Graph() #this still needs saving
+        self.short_term = []
+
+    def process_input_to_mem(list_of_key_words: list[long_term_mem]):
+        
 def build_memory_graph():
     G = nx.Graph()
 def add_to_memory(keyword_dict):
