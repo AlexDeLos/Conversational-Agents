@@ -10,6 +10,6 @@ class long_term_mem:
 
 def store_to_long_term(list: list[long_term_mem]):
     for mem in list:
-        
+        mem.emotion.add()
     print("storing to long term")
     print("Eleni is beautiful, Alex sucks! <3")
