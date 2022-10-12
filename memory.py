@@ -15,7 +15,7 @@ class Memory:
                 print(self.long_term.nodes.data())
                 jsonFile.close()
         except IOError:
-            self.long_term = nx.Graph() #this still needs saving
+            self.long_term = nx.Graph()
         self.short_term = []
 
     # def process_input_to_mem(list_of_key_words: list[long_term_mem]):
@@ -39,12 +39,16 @@ class Memory:
             # add it or fuse it
             # add the new connections
             # print(self.long_term.nodes.data())
+
+    #saves the memory we have gathered and saves it in a JSON file unique for the user
     def end_convo (self):
         with open("memoryStore/" + self.user_name + '.json', 'w') as jsonFile:
             data = json_graph.node_link_data(self.long_term)
             json.dump(data ,jsonFile)
             jsonFile.close()
 
+    def get_mem (self, key_word, emotinal_vec):
+        print(self.long_term.nodes.data())
 
 mem = Memory('John')
 mem.add_to_memory ({'like': [1,1,1] ,'dog': [0.5,0.1,0.9]})
