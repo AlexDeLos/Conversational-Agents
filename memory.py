@@ -12,7 +12,7 @@ class Memory:
             with open("memoryStore/" + userName+ '.json') as jsonFile:
                 data = json.load(jsonFile)
                 self.long_term = json_graph.node_link_graph(data)
-                print(self.long_term.nodes.data())
+                #print(self.long_term.nodes.data())
                 jsonFile.close()
         except IOError:
             self.long_term = nx.Graph()
@@ -42,6 +42,12 @@ class Memory:
 
     #saves the memory we have gathered and saves it in a JSON file unique for the user
     def end_convo (self):
+        for node in self.long_term.nodes.data():
+            newArray = [x / 1.2 for x in list(node[1]['emotion'])]
+            print(newArray)
+            print(node[0], node[1]['emotion'])
+            self.long_term.add_node(node[0], emotion = newArray)
+
         with open("memoryStore/" + self.user_name + '.json', 'w') as jsonFile:
             data = json_graph.node_link_data(self.long_term)
             json.dump(data ,jsonFile)
@@ -51,10 +57,10 @@ class Memory:
         print(self.long_term.nodes.data())
 
 mem = Memory('John')
-mem.add_to_memory ({'like': [1,1,1] ,'dog': [0.5,0.1,0.9]})
-mem.add_to_memory ({'dog': [0.9,0.1,0.9]})
-mem.add_to_memory ({'like': [0.1,0.1,0.1]})
-mem.add_to_memory ({'eleni': [0.4,0.7,0.1], 'like': [0.1,0.1,0.1]})
+#mem.add_to_memory ({'like': [1,1,1] ,'dog': [0.5,0.1,0.9]})
+#mem.add_to_memory ({'dog': [0.9,0.1,0.9]})
+#mem.add_to_memory ({'like': [0.1,0.1,0.1]})
+#mem.add_to_memory ({'eleni': [0.4,0.7,0.1], 'like': [0.1,0.1,0.1]})
 # print(mem.long_term.nodes.data())
 # print(mem.long_term.edges.data())
 
