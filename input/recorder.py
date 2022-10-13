@@ -8,15 +8,13 @@ import sounddevice as sd
 import soundfile as sf
 import os, shutil, uuid
 
-from typing import Self
-
 @dataclass
 class RMS:
     time: float
     silent: bool
 
 class Recorder:
-    def __init__(self: Self, queue: Queue, model_type: ModelType = ModelType.SMALL):
+    def __init__(self, queue: Queue, model_type: ModelType = ModelType.SMALL):
         self.queue = queue
         self.asr = ASR(model_type)
         self.data = []
@@ -26,7 +24,7 @@ class Recorder:
             shutil.rmtree('tmp')
         os.makedirs('tmp')
 
-    def start(self: Self) -> None:
+    def start(self) -> None:
         Process(target=self.record_and_process).start()
 
     def record_and_process(self) -> None:
@@ -41,7 +39,7 @@ class Recorder:
             self.stream.start()
             self.process_data()
     
-    def process_data(self: Self) -> None:
+    def process_data(self) -> None:
         if not self.window:
             return
 
