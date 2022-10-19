@@ -2,11 +2,14 @@ from input.constants import CHANNELS, RMS_THRESHOLD, SAMPLE_RATE, SILENCE_THRESH
 from dataclasses import dataclass
 from input.asr import ASR, ModelType
 from multiprocessing import Process, Queue
+from input.ser import extract_feature
 
 import numpy as np
 import sounddevice as sd
 import soundfile as sf
 import os, shutil, uuid
+import glob
+import pickle
 
 @dataclass
 class RMS:
@@ -19,6 +22,7 @@ class Recorder:
         self.asr = ASR(model_type)
         self.data = []
         self.window = []
+        self.ser = pickle.load(open("input/result/mlp_classifier.model", "rb"))
 
         if os.path.exists('tmp'):
             shutil.rmtree('tmp')
@@ -55,9 +59,9 @@ class Recorder:
             self.data = []
 
             if data:
-                Process(target=process_audio_data, args=(self.asr, self.queue, data,)).start()
+                Process(target=process_audio_data, args=(self.asr, self.queue, data, self.ser)).start()
     
-def process_audio_data(asr: ASR, queue: Queue, data) -> None:
+def process_audio_data(asr: ASR, queue: Queue, data, ser) -> None:
     wav_file = f'tmp/{str(uuid.uuid4())}.wav'
     
     with sf.SoundFile(wav_file, 'w', SAMPLE_RATE, CHANNELS) as file:
@@ -65,4 +69,9 @@ def process_audio_data(asr: ASR, queue: Queue, data) -> None:
 
     queue.put(asr.transcribe(wav_file))
 
-    # TODO: determine emotion from speech file
+    os.system(f"ffmpeg -i {wav_file} -ac 1 -ar 16000 {wav_file}")
+    for file in glob.glob(wav_file):
+        x=[]
+        x.append(extract_feature(file, mfcc = True, chroma = True, mel = True))
+        print(ser.predict_proba(x))
+    
