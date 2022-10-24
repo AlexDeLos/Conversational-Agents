@@ -1,7 +1,7 @@
 #storing and retreiving files from memory
 import itertools
 import numpy as np
-from scipy.spatial import distance
+from scipy import spatial
 import networkx as nx
 import json
 import numpy as np
@@ -46,8 +46,8 @@ class Memory:
     def end_convo (self):
         for node in self.long_term.nodes.data():
             newArray = [x / 1.2 for x in list(node[1]['emotion'])]
-            print(newArray)
-            print(node[0], node[1]['emotion'])
+            #print(newArray)
+            #print(node[0], node[1]['emotion'])
             self.long_term.add_node(node[0], emotion = newArray)
 
         with open("memoryStore/" + self.user_name + '.json', 'w') as jsonFile:
@@ -55,24 +55,39 @@ class Memory:
             json.dump(data ,jsonFile)
             jsonFile.close()
 
-    def get_mem (self, key_word_array, emotinal_vec):
+    def get_mem (self, dictionary):
         #TODO: implement this you get the closest node to the graph and that has the closes memory vector for each keyword
         #return the array of keywords
-        for key_word in key_word_array:
-            neighbors = self.long_term.neighbors(key_word)
-            #from neighbors grab the word with the most similar emotion vector to emotinal_vec
-            neighbors
+        result = []
+        for element in dictionary:
+            neighbors = list(self.long_term.neighbors(element))
+            print(neighbors)
+            for n in neighbors:
+                vector = self.long_term.nodes[n]["emotion"]
+                similarity = 1 - spatial.distance.cosine(vector, dictionary[element])
+                print(similarity)
+                #print(n)
+                if (similarity > 0.8):
+                    result.append(n)
+        # print(result)
+        return result
 
-            distances = distance.cdist([emotinal_vec], neighbors[1], "cosine")
-            print(distances)
+
+            #from neighbors grab the word with the most similar emotion vector to emotinal_vec
+
+
+            #distances = distance.cdist([emotinal_vec], neighbors[1], "cosine")
+            #print(distances)
         #print(self.long_term.nodes.data())
 
 
 mem = Memory('John')
-#mem.add_to_memory ({'like': [1,1,1] ,'dog': [0.5,0.1,0.9]})
-#mem.add_to_memory ({'dog': [0.9,0.1,0.9]})
-#mem.add_to_memory ({'like': [0.1,0.1,0.1]})
-#mem.add_to_memory ({'eleni': [0.4,0.7,0.1], 'like': [0.1,0.1,0.1]})
+# mem.add_to_memory ({'like': [1,1,1] ,'dog': [0.5,0.1,0.9]})
+mem.add_to_memory ({'dog': [1,0,0]})
+mem.add_to_memory ({'like': [0.1,0.1,0.1]})
+mem.add_to_memory ({'eleni': [0.4,0.7,0.1], 'like': [0.1,0.1,0.1]})
+
+mem.get_mem({'like': [0,1,1]})
 # print(mem.long_term.nodes.data())
 # print(mem.long_term.edges.data())
 
