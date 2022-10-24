@@ -1,10 +1,12 @@
 #storing and retreiving files from memory
 import itertools
-from ast import keyword
+import numpy as np
+from scipy.spatial import distance
 import networkx as nx
 import json
 import numpy as np
 from networkx.readwrite import json_graph
+
 class Memory:
     def __init__(self, userName):
         self.user_name = userName
@@ -53,8 +55,18 @@ class Memory:
             json.dump(data ,jsonFile)
             jsonFile.close()
 
-    def get_mem (self, key_word, emotinal_vec):
-        print(self.long_term.nodes.data())
+    def get_mem (self, key_word_array, emotinal_vec):
+        #TODO: implement this you get the closest node to the graph and that has the closes memory vector for each keyword
+        #return the array of keywords
+        for key_word in key_word_array:
+            neighbors = self.long_term.neighbors(key_word)
+            #from neighbors grab the word with the most similar emotion vector to emotinal_vec
+            neighbors
+
+            distances = distance.cdist([emotinal_vec], neighbors[1], "cosine")
+            print(distances)
+        #print(self.long_term.nodes.data())
+
 
 mem = Memory('John')
 #mem.add_to_memory ({'like': [1,1,1] ,'dog': [0.5,0.1,0.9]})
