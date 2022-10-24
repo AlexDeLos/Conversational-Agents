@@ -48,7 +48,7 @@ def extract_feature(file_name, mfcc = False, chroma = False, mel = False, contra
             result = np.hstack((result, chroma))
 
         if mel:
-            mel = np.mean(librosa.feature.melspectrogram(X, sr=sample_rate).T,axis=0)
+            mel = np.mean(librosa.feature.melspectrogram(y=X, sr=sample_rate).T,axis=0)
             result = np.hstack((result, mel))
 
         if contrast:

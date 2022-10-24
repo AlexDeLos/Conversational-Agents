@@ -8,7 +8,6 @@ import numpy as np
 import sounddevice as sd
 import soundfile as sf
 import os, shutil, uuid
-import glob
 import pickle
 
 @dataclass
@@ -69,9 +68,8 @@ def process_audio_data(asr: ASR, queue: Queue, data, ser) -> None:
 
     text = asr.transcribe(wav_file)
 
-    os.system(f"ffmpeg -i {wav_file} -ac 1 -ar 16000 {wav_file}")
-    for file in glob.glob(wav_file):
-        emotion = ser.predict_proba(extract_feature(file, mfcc = True, chroma = True, mel = True).reshape(1,-1))
+    os.system(f"ffmpeg -i {wav_file} -ac 1 -ar 16000 {wav_file.replace('-', '_')} >/dev/null 2>&1")
+    emotion = ser.predict_proba(extract_feature(wav_file.replace('-', '_'), mfcc = True, chroma = True, mel = True).reshape(1,-1))
     
     queue.put((text, emotion))
     
