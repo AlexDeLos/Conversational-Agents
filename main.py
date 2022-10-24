@@ -6,7 +6,7 @@ import furhat_remote_api #import FurhatRemoteAPI
 
 def main():
     userName = "John"
-    textInput ="test input"
+    textInput ="Hello, my name is Alex. I am awsome and great at everything"
 
     keyWords = get_key_concepts(textInput)
 
