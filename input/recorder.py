@@ -67,11 +67,11 @@ def process_audio_data(asr: ASR, queue: Queue, data, ser) -> None:
     with sf.SoundFile(wav_file, 'w', SAMPLE_RATE, CHANNELS) as file:
         file.write(data)
 
-    queue.put(asr.transcribe(wav_file))
+    text = asr.transcribe(wav_file)
 
     os.system(f"ffmpeg -i {wav_file} -ac 1 -ar 16000 {wav_file}")
     for file in glob.glob(wav_file):
-        x=[]
-        x.append(extract_feature(file, mfcc = True, chroma = True, mel = True))
-        print(ser.predict_proba(x))
+        emotion = ser.predict_proba(extract_feature(file, mfcc = True, chroma = True, mel = True).reshape(1,-1))
+    
+    queue.put((text, emotion))
     
