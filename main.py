@@ -19,13 +19,11 @@ def main():
     mem.end_convo()
 
 
-def zipIntoDic(test_keys, test_values):
+def zipIntoDic(test_keys, value):
     res = {}
     for key in test_keys:
-        for value in test_values:
-            res[key] = value
-            test_values.remove(value)
-            break
+        res[key] = value
     return res
+
 if __name__ == "__main__":
     main()
