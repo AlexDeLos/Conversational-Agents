@@ -5,13 +5,14 @@ def get_key_concepts(string: str):
     tokens = nltk.word_tokenize(string)
     tagged = nltk.pos_tag(tokens)
     print(tagged)
+    result =[]
     for tag in tagged:
-        if tag[1] == 'DT' or tag[1] == '.' or tag[1] == 'PRP' or tag[1] == ',':
-            tagged.remove(tag)
+        if tag[1] == 'NN' or tag[1] == 'VBZ' or tag[1] == 'NNP' or tag[1] == 'JJ':
+            result.append(tag)
 
     #print(tagged)
-    lst2 = [item[0] for item in tagged]
-    #print(lst2)
+    lst2 = [res[0] for res in result]
+    print(lst2)
     return lst2
 
 get_key_concepts("this is a test sentence. Eleni is a very sketchy girl, she is pretty")

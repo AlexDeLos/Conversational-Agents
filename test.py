@@ -13,11 +13,15 @@ furhat.set_voice(name='Matthew')
 furhat.say(text="Hi there!")
 
 # Play an audio file (with lipsync automatically added)
-furhat.say(url="https://www2.cs.uic.edu/~i101/SoundFiles/gettysburg10.wav", lipsync=True)
+#furhat.say(url="https://www2.cs.uic.edu/~i101/SoundFiles/gettysburg10.wav", lipsync=True)
 
 # Listen to user speech and return ASR result
 result = furhat.listen()
 
+print(result.message)
+
+
+furhat.say(text="fuck")
 # Perform a named gesture
 furhat.gesture(name="BrowRaise")
 
