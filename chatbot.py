@@ -1,7 +1,7 @@
 from msilib.schema import Class
 import openai
 
-openai.api_key = "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"
+openai.api_key = "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"
 completion = openai.Completion()
 
 #name1 = 'Bob'
