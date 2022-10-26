@@ -1,6 +1,7 @@
 from keyWordExtraction import *
 from memory import *
 from furhat_remote_api import FurhatRemoteAPI
+from chatbot import *
 
 
 def zipIntoDic(test_keys, value):
@@ -30,17 +31,18 @@ furhat.say(text="Great! What do you need?")
 
 userName = nameResponse.message
 mem= Memory(userName)
+chatbot = Chatbot(userName, 'Matthew')
 print(nameResponse.message)
 textInput ="NO"
 end = False
 while not end:
     response = furhat.listen()
-    furhat.say(text="Ok, I got that, what else?") #this is to be replaced with the genereted response text
     if response.success:
         textInput = response.message
         keyWords = get_key_concepts(textInput)
-        print(keyWords)
+        #print(keyWords)
         dic = zipIntoDic(keyWords,[0.5,0.5,0.5,0.5])
+        furhat.say(text=chatbot.talk(textInput, dic))
         mem.add_to_memory(dic)
         print("done")
     else:
