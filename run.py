@@ -40,8 +40,11 @@ while not end:
     if response.success:
         textInput = response.message
         keyWords = get_key_concepts(textInput)
-        #print(keyWords)
-        dic = zipIntoDic(keyWords,[0.5,0.5,0.5,0.5])
+        emotion = [0.5,0.5,0.5,0.5]
+        dic = zipIntoDic(keyWords,emotion)
+        appended = mem.get_mem(dic)
+        for word in appended:
+            dic[word] = emotion
         furhat.say(text=chatbot.talk(textInput, dic))
         mem.add_to_memory(dic)
         print("done")

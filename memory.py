@@ -67,7 +67,7 @@ class Memory:
                 similarity = 1 - spatial.distance.cosine(vector, dictionary[element])
                 print(similarity)
                 #print(n)
-                if (similarity > 0.8):
+                if (similarity > 0.9):
                     result.append(n)
         # print(result)
         return result
