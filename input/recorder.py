@@ -1,3 +1,4 @@
+from time import time
 from input.constants import CHANNELS, RMS_THRESHOLD, SAMPLE_RATE, SILENCE_THRESHOLD, TIME_THRESHOLD
 from dataclasses import dataclass
 from input.asr import ASR, ModelType
@@ -8,7 +9,7 @@ import numpy as np
 import sounddevice as sd
 import soundfile as sf
 import os, shutil, uuid
-import pickle
+import pickle, time
 
 @dataclass
 class RMS:
@@ -16,7 +17,7 @@ class RMS:
     silent: bool
 
 class Recorder:
-    def __init__(self, queue: Queue, model_type: ModelType = ModelType.SMALL):
+    def __init__(self, queue: Queue, model_type: ModelType = ModelType.BASE):
         self.queue = queue
         self.asr = ASR(model_type)
         self.data = []
@@ -31,13 +32,14 @@ class Recorder:
         Process(target=self.record_and_process).start()
 
     def record_and_process(self) -> None:
-        def callback(indata, frames, time, status) -> None:
-            self.last_time = time.currentTime
+        def callback(indata, frames, _time, status) -> None:
+            self.last_time = time.time()
             self.data.extend(indata[:, 0])
-            self.window.append(RMS(time.currentTime, np.sqrt(np.mean(indata[:, 0] ** 2)) < RMS_THRESHOLD))
+            self.window.append(RMS(self.last_time, np.sqrt(np.mean(indata[:, 0] ** 2)) < RMS_THRESHOLD))
 
         self.stream = sd.InputStream(samplerate=SAMPLE_RATE, channels=CHANNELS, callback=callback)
         
+        print("Recording")
         while True:
             self.stream.start()
             self.process_data()
@@ -50,7 +52,7 @@ class Recorder:
         percentage_of_silence = sum([ o.silent for o in self.window ]) / len(self.window)
 
         # Check if there is a silence and there were at least samples for `TIME_THRESHOLD` seconds.
-        if percentage_of_silence > SILENCE_THRESHOLD and len(self.window) > TIME_THRESHOLD * 128 * 0.75:
+        if percentage_of_silence > SILENCE_THRESHOLD and len(self.window) > 15:
             silent_array = [ o.silent for o in self.window ]
             data = self.data[silent_array.index(False):] if False in silent_array else []
 
@@ -68,7 +70,7 @@ def process_audio_data(asr: ASR, queue: Queue, data, ser) -> None:
 
     text = asr.transcribe(wav_file)
 
-    os.system(f"ffmpeg -i {wav_file} -ac 1 -ar 16000 {wav_file.replace('-', '_')} >/dev/null 2>&1")
+    os.system(f"ffmpeg -i {wav_file} -ac 1 -ar 16000 {wav_file.replace('-', '_')}")
     emotion = ser.predict_proba(extract_feature(wav_file.replace('-', '_'), mfcc = True, chroma = True, mel = True).reshape(1,-1))
     
     queue.put((text, emotion))
