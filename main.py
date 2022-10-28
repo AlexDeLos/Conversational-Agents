@@ -30,17 +30,15 @@ def main():
     wav_file = f'tmp/{str(uuid.uuid4())}.wav'
 
     while True:
-        
-        result = furhat.listen()
-        print(result.message)
-
+        thread = furhat.furhat_listen_get(async_req=True)
         myrecording = sd.rec(int(3*16000), samplerate=16000, channels=1, dtype="float32")
         sd.wait()   
         write(wav_file, 16000, myrecording)
         emotion = ser.predict_proba(extract_feature(wav_file, mfcc = True, chroma = True, mel = True).reshape(1,-1))  
-        furhat.say(wav_file)
-
+        result = thread.get()
+        print(result)
         print(emotion)
+        
         furhat.say(text = "Can you please repeat that?")
     
 if __name__ == "__main__":
