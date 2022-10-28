@@ -1,0 +1,3 @@
+#!/Users/thijsnulle/Documents/Git/Conversational-Agents/env/bin/python3
+from numba.pycc import main
+main()
