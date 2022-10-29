@@ -39,9 +39,6 @@ def main():
     #need to zip the key words and vector BOTH NEED TO HAVE THE SAME LENGTH
     dictionary = zipIntoDic(keyWords,emotions)
     mem = Memory(userName)
-    mem.add_to_memory(dictionary)
-    #mem.get_mem("test", [1,1,1,1])
-    mem.end_convo()
 
 
 def zipIntoDic(test_keys, value):

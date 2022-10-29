@@ -14,7 +14,6 @@ class Memory:
             with open("memoryStore/" + userName+ '.json') as jsonFile:
                 data = json.load(jsonFile)
                 self.long_term = json_graph.node_link_graph(data)
-                #print(self.long_term.nodes.data())
                 jsonFile.close()
         except IOError:
             self.long_term = nx.Graph()
@@ -30,6 +29,8 @@ class Memory:
             try:
                 current = np.array(self.long_term.nodes[key]['emotion'])
                 new = np.array(keyword_dict[key])
+                print(current)
+                print(new)
                 avg = (current + new) / 2
                 # print(avg)
                 self.long_term.add_node(key, emotion = list(avg))
@@ -46,14 +47,14 @@ class Memory:
     def end_convo (self):
         for node in self.long_term.nodes.data():
             newArray = [x / 1.2 for x in list(node[1]['emotion'])]
-            #print(newArray)
-            #print(node[0], node[1]['emotion'])
             self.long_term.add_node(node[0], emotion = newArray)
 
         with open("memoryStore/" + self.user_name + '.json', 'w') as jsonFile:
             data = json_graph.node_link_data(self.long_term)
+            #print(data)
             json.dump(data ,jsonFile)
             jsonFile.close()
+            #print("saved")
 
     def get_mem (self, dictionary):
         #TODO: implement this you get the closest node to the graph and that has the closes memory vector for each keyword
@@ -61,34 +62,14 @@ class Memory:
         result = []
         for element in dictionary:
             neighbors = list(self.long_term.neighbors(element))
-            print(neighbors)
+            #print(neighbors)
             for n in neighbors:
                 vector = self.long_term.nodes[n]["emotion"]
                 similarity = 1 - spatial.distance.cosine(vector, dictionary[element])
-                print(similarity)
+                #print(similarity)
                 #print(n)
                 if (similarity > 0.9):
                     result.append(n)
         # print(result)
         return result
 
-
-            #from neighbors grab the word with the most similar emotion vector to emotinal_vec
-
-
-            #distances = distance.cdist([emotinal_vec], neighbors[1], "cosine")
-            #print(distances)
-        #print(self.long_term.nodes.data())
-
-
-mem = Memory('John')
-# mem.add_to_memory ({'like': [1,1,1] ,'dog': [0.5,0.1,0.9]})
-mem.add_to_memory ({'dog': [1,0,0]})
-mem.add_to_memory ({'like': [0.1,0.1,0.1]})
-mem.add_to_memory ({'eleni': [0.4,0.7,0.1], 'like': [0.1,0.1,0.1]})
-
-mem.get_mem({'like': [0,1,1]})
-# print(mem.long_term.nodes.data())
-# print(mem.long_term.edges.data())
-
-mem.end_convo()

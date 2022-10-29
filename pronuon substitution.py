@@ -190,21 +190,21 @@ with open(readFlNm, "r") as fileIn:
     for word, freq in freqOfWords.items():
         freqOfWords[word] = freqOfWords[word] / nt
 
-tagged = getTagsForWords(lineIn)
-NNP = getNounPositions('NNP', tagged)
-NNP = removeWeekNmMonthNm(NNP)
+#tagged = getTagsForWords(lineIn)
+#NNP = getNounPositions('NNP', tagged)
+#NNP = removeWeekNmMonthNm(NNP)
 # NN=getNounPositions('NN',tagged)
 # NNS=getNounPositions('NNS',tagged)
-PRP = getProNounPositions(tagged)
+#PRP = getProNounPositions(tagged)
 
-linesOriginal2 = getAllLines(lineIn)
-lineInReplacePronn = pronounReplaceWithNearNoun(lineIn, PRP, NNP)
-linesReplacedPronn2 = getAllLines(lineInReplacePronn)
-print(percentageOfSummary)
+#linesOriginal2 = getAllLines(lineIn)
+#lineInReplacePronn = pronounReplaceWithNearNoun(lineIn, PRP, NNP)
+#linesReplacedPronn2 = getAllLines(lineInReplacePronn)
+#print(percentageOfSummary)
 
 # perform the text summarization without pronoun replacement
-reducedSummaryWithoutReplc = obtainSummary(linesOriginal2, linesOriginal2, percentageOfSummary)
+#reducedSummaryWithoutReplc = obtainSummary(linesOriginal2, linesOriginal2, percentageOfSummary)
 # perform the text summarization with pronoun replacement
-reducedSummaryWithReplc = obtainSummary(linesReplacedPronn2, linesOriginal2, percentageOfSummary)
+#reducedSummaryWithReplc = obtainSummary(linesReplacedPronn2, linesOriginal2, percentageOfSummary)
 
-print(reducedSummaryWithReplc)
+#print(reducedSummaryWithReplc)

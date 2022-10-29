@@ -38,8 +38,7 @@ class Recorder:
             self.window.append(RMS(self.last_time, np.sqrt(np.mean(indata[:, 0] ** 2)) < RMS_THRESHOLD))
 
         self.stream = sd.InputStream(samplerate=SAMPLE_RATE, channels=CHANNELS, callback=callback)
-        
-        print("Recording")
+
         while True:
             self.stream.start()
             self.process_data()

@@ -52,11 +52,11 @@ text = "Eleni is hot. She really needs a cookie."
 
 
 prediction = predictor.predict(document=text)  # get prediction
-print("Clsuters:-")
-for cluster in prediction['clusters']:
-    print(cluster)  # list of clusters (the indices of spaCy tokens)
+#print("Clsuters:-")
+#for cluster in prediction['clusters']:
+#    print(cluster)  # list of clusters (the indices of spaCy tokens)
 # Result: [[[0, 3], [26, 26]], [[34, 34], [50, 50]]]
-print('\n\n') #Newline
+#print('\n\n') #Newline
 
-print('Coref resolved: ',predictor.coref_resolved(text))  # resolved text
+#print('Coref resolved: ',predictor.coref_resolved(text))  # resolved text
 # Result: Joseph Robinette Biden Jr. is an American politician who is the 46th

@@ -1,11 +1,8 @@
 from msilib.schema import Class
 import openai
 
-openai.api_key = "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"
+openai.api_key = ""
 completion = openai.Completion()
-
-#name1 = 'Bob'
-#name2 = 'John'
 
 class Chatbot :
     def __init__(self, userName, agentName):
