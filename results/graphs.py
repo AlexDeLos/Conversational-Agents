@@ -7,15 +7,15 @@ import seaborn as sns
 f, ax = plt.subplots(figsize=(7, 6))
 
 data = [
-    { 'statement': 'The system is useful.', 'true': [], 'false': [4, 4, 5]},
-    { 'statement': 'The system is pleasant.', 'true': [], 'false': [6, 5, 6]},
-    { 'statement': 'The system is friendly.', 'true': [], 'false': [6, 5, 6]},
-    { 'statement': 'I was able to recover easily from errors.', 'true': [], 'false': [3, 3, 3]},
-    { 'statement': 'I enjoyed using the system.', 'true': [], 'false': [6, 6, 6]},
-    { 'statement': 'It is clear how to speak to the system.', 'true': [], 'false': [6, 5, 6]},
-    { 'statement': 'It is easy to learn to use the system.', 'true': [], 'false': [7, 6, 6]},
-    { 'statement': 'I would use this system.', 'true': [], 'false': [3, 4, 4]},
-    { 'statement': 'I felt in control of the interaction with the system.', 'true': [], 'false': [7, 6, 7]},
+    { 'statement': 'The system is useful.', 'true': [3,	4,	3], 'false': [4, 4, 5,4, 4, 5]},
+    { 'statement': 'The system is pleasant.', 'true': [6,	5,	5], 'false': [6, 5, 6,6 ,5 ,6]},
+    { 'statement': 'The system is friendly.', 'true': [5,	4,	6], 'false': [6, 5, 6,6 ,5 ,6]},
+    { 'statement': 'I was able to recover easily from errors.', 'true': [3,	3,	3], 'false': [3, 3, 3,3, 3, 3]},
+    { 'statement': 'I enjoyed using the system.', 'true': [4,	5,	6], 'false': [6, 6, 6,6 ,6 ,6]},
+    { 'statement': 'It is clear how to speak to the system.', 'true': [6,	5,	6], 'false': [6, 5, 6,6 ,5 ,6]},
+    { 'statement': 'It is easy to learn to use the system.', 'true': [5,	6,	6], 'false': [7, 6, 6,7 ,6 ,6]},
+    { 'statement': 'I would use this system.', 'true': [3,	4,	4], 'false': [3, 4, 4,3 ,4 ,4]},
+    { 'statement': 'I felt in control of the interaction with the system.', 'true': [6,	5,	6], 'false': [7, 6, 7,7 , 6 , 7]},
 ]
 
 ### TRANSFORM AND PLOT INPUT DATA ###
